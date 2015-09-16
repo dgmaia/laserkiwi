@@ -10,7 +10,6 @@
             background-color: #333;
         }
         .explosion {
-            display: none;
             z-index: 80;
             position: absolute;
             right: 0;
@@ -62,14 +61,22 @@
     </style>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-         $(window).load(function() {
+        $(window).load(function() {
+            var flag0 = "<img src='https://www.govt.nz/assets/flags-designs/2170-kyle-lockwood-silver-fern-nz-flag-final-cr-3.png'/>"
+            var flag1 = "<img src='https://www.govt.nz/assets/flags-designs/4.-Alofi-Kanter-Silver-Fern-Black-and-White.jpg'/>"
+            var flag2 = "<img src='https://www.govt.nz/assets/flags-designs/2172-kyle-lockwood-silver-fern-nz-flag-final-cr-4.png'/>"
+            var flag3 = "<img src='https://www.govt.nz/assets/flags-designs/Koru-web.jpg'/>"
+            var explosion = "<div class='explosion'><img src='http://rs517.pbsrc.com/albums/u333/PhotoPun/explosion.gif~c200'/></div>"
             var heightTotal = $( window ).height();
             var kiwi = $('.kiwi');
             var flag = $('.flag');
-            var boom = $('.explosion');
+            var count = 0;
+            var previousFlagPosition = 0;
+            var thisFlagPosition = Math.floor(Math.random()*5);
+
             kiwi.css('height',(heightTotal/6));
             flag.css('height',(heightTotal/6));
-            var count = 0;
+
             var laserBeam = function() {
                 if($('.laser').length<=1) {
                     $('body').append("<div id='laser' class='laser'><div class='bean'></div></div>");
@@ -77,19 +84,28 @@
                     laser.css('height',(heightTotal/6));
                     laser.css('top',(kiwi.offset().top));
                     setTimeout(function(){ laser.addClass('moved') }, 100);
-                    setTimeout(function(){ laser.remove() }, 800);
+                    setTimeout(function(){ laser.remove() }, 700);
                 }
             }
-            var nzFlag = function() {
-                if(flag.find('img').length) {
+
+            function flagPosition() {
+                while (previousFlagPosition === thisFlagPosition) {
+                    thisFlagPosition = Math.floor(Math.random()*5);
+                }
+                previousFlagPosition = thisFlagPosition;
+            };
+
+            function nzFlag() {
+                if (flag.find('img').length) {
                     flag.find('img').remove();
                     flag.append(eval('flag' + Math.floor(Math.random()*4)));
-                    flag.css('top',(heightTotal/6)*Math.floor(Math.random()*5));
-                }else {
+                    flag.css('top',(heightTotal/6)*thisFlagPosition);
+                } else {
                     flag.append(eval('flag' + Math.floor(Math.random()*4)));
-                    flag.css('top',(heightTotal/6)*Math.floor(Math.random()*5));
+                    flag.css('top',(heightTotal/6)*thisFlagPosition);
                 }
             }
+
             function collision(div1, div2) {
                 if (!$(div1).length) {
                     return false;
@@ -112,12 +128,15 @@
 
             window.setInterval(function() {
                 if(collision($('#laser .bean'), $('.flag'))) {
-                    boom.css('top',flag.offset().top);
+                    $('.flag').after(explosion);
+                    $('#laser').remove();
+                    $('.explosion').css('top',flag.offset().top);
                     flag.find('img').remove();
-                    $('.explosion').show();
-                    setTimeout(function(){ $('.explosion').hide(); }, 1200);
+                    if ($('.explosion').length > 0) {
+                        setTimeout(function(){ $('.explosion').remove() }, 800);
+                    }
                 }
-            }, 100);
+            }, 50);
 
             $(document).keydown(function(e) {
                 switch (e.which) {
@@ -142,12 +161,10 @@
                         break;
                 }
             })
-            var flag0 = "<img src='https://www.govt.nz/assets/flags-designs/2170-kyle-lockwood-silver-fern-nz-flag-final-cr-3.png'/>"
-            var flag1 = "<img src='https://www.govt.nz/assets/flags-designs/4.-Alofi-Kanter-Silver-Fern-Black-and-White.jpg'/>"
-            var flag2 = "<img src='https://www.govt.nz/assets/flags-designs/2172-kyle-lockwood-silver-fern-nz-flag-final-cr-4.png'/>"
-            var flag3 = "<img src='https://www.govt.nz/assets/flags-designs/Koru-web.jpg'/>"
 
+            setInterval(function(){ flagPosition() }, 1500);
             setInterval(function(){ nzFlag() }, 1500);
+
         });
     </script>
 </head>
@@ -160,6 +177,13 @@
     </svg>
 </div>
 <div class="flag"></div>
-<div class="explosion"><img src="http://rs517.pbsrc.com/albums/u333/PhotoPun/explosion.gif~c200" /></div>
+<div class="loading-assets" style="display: none;">
+    <img src='https://www.govt.nz/assets/flags-designs/2170-kyle-lockwood-silver-fern-nz-flag-final-cr-3.png'/>
+    <img src='https://www.govt.nz/assets/flags-designs/4.-Alofi-Kanter-Silver-Fern-Black-and-White.jpg'/>
+    <img src='https://www.govt.nz/assets/flags-designs/2172-kyle-lockwood-silver-fern-nz-flag-final-cr-4.png'/>
+    <img src='https://www.govt.nz/assets/flags-designs/Koru-web.jpg'/>
+    <img src="http://rs517.pbsrc.com/albums/u333/PhotoPun/explosion.gif~c200" />
+</div>
+
 </body>
 </html>
