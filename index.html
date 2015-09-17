@@ -23,9 +23,11 @@
             z-index: 100;
         }
         .kiwi svg {
+            width: 100%;
             height: 100%;
             z-index: 90;
             position: relative;
+            display: block;
         }
         .flag {
             z-index: 70;
@@ -56,7 +58,7 @@
     </style>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-        var flagCounts = 0;
+        var flagCount = 0;
         var flag = 0;
         var flags = [];
         var flag0 = "<img src='https://www.govt.nz/assets/flags-designs/2170-kyle-lockwood-silver-fern-nz-flag-final-cr-3.png'/>"
@@ -64,6 +66,8 @@
         var flag2 = "<img src='https://www.govt.nz/assets/flags-designs/2172-kyle-lockwood-silver-fern-nz-flag-final-cr-4.png'/>"
         var flag3 = "<img src='https://www.govt.nz/assets/flags-designs/Koru-web.jpg'/>"
         var explosion = "<div class='explosion'><img src='http://rs517.pbsrc.com/albums/u333/PhotoPun/explosion.gif~c200'/></div>"
+        var contact = 0;
+        var flagNumber = 0;
 
         $(window).load(function() {
 
@@ -98,12 +102,13 @@
 
             function createFlag() {
                 flagPosition();
+                flagCount += 1;
                 var flag = $("<div>")
                    .addClass("flag")
+                   .addClass('n' + flagCount)
                    .append(eval('flag' + Math.floor(Math.random()*4)))
-                   .css({ top: ((heightTotal/6)*thisFlagPosition), height: (heightTotal/6) });
+                   .css({ top: ((heightTotal/6)*thisFlagPosition+5), height: (heightTotal/6) });
                 $('body').append(flag);
-                flagCounts += 1;
             }
 
             function collision(div1, div2) {
@@ -129,6 +134,7 @@
             window.setInterval(function() {
                 flags = $('.flag').toArray();
                 $(flags).each(function(){
+                    flagNumber = $(this).attr('class');
                     if(collision($('#laser .bean'), $(this))) {
                         $(this).after(explosion);
                         $('#laser').remove();
