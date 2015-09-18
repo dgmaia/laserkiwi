@@ -24,6 +24,10 @@
             50%{background-position:100% 50%}
             100%{background-position:0% 50%}
         }
+        .key {
+            float: left;
+            height: 100%;
+        }
         .end {
             width: 300px;
             height: 300px;
@@ -106,7 +110,7 @@
         .heart {
             width: 100px;
             height: 100px;
-            float: left;
+            float: right;
             position: relative;
         }
         .heart svg {
@@ -267,6 +271,7 @@
         function theEnd() {
             $('.flag').remove();
             $('.kiwi').remove();
+            $('.lifebar').remove();
             $('body').append("<div class='boom'></div>");
             $('body').append("<div class='end' style='display: none;'><img src='joker.gif' /><p>You lose $26 million</p></div>");
             $('.end').delay(1500).fadeIn();
@@ -356,23 +361,15 @@
                 checkLife()
             }, 10);
 
-            // theGame = setInterval(function(){
-            //     if (gameOn) {
-            //         createFlag();
-            //         console.log(flagGenerator);
-            //     }
-            //     flagGenerator -= 50;
-            // }, 400);
-            
             function theGame() {
                 if (gameOn) {
                     createFlag();
                 }
                 flagGenerator -= 5;
-                console.log(flagGenerator);
                 setTimeout(theGame, flagGenerator);
             };
-            theGame();
+
+            setTimeout(theGame, 3000);
 
         };
     </script>
@@ -386,6 +383,7 @@
     </div>
 
     <div class="lifebar" style="display: none">
+        <img class="key" src="key.png">
         <div class="heart">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 386.1 341.5"><path fill="#FA0E6A" d="M324.9 66.3v-26h-78v26H221v26h-52v-26h-26v-26H65.1v26h-26v103.9h26v26h26v26h26v26H143v25.9h26v26h52v-26h25.9v-25.9h26v-26h26v-26h26v-26h26V66.3"/><path d="M65.1 14.4h26v26h-26zM91.1 14.4h26v26h-26zM117.1 14.4h26v26h-26zM246.9 14.4h26v26h-26zM272.9 14.4h26v26h-26zM298.9 14.4h26v26h-26zM39.1 40.3h26v26h-26zM13.1 66.3h26v26h-26zM13.1 92.3h26v26h-26zM13.1 118.3h26v26h-26z"/><path d="M13.1 144.2h26v26h-26zM39.1 170.2h26v26h-26zM65.1 196.2h26v26h-26zM91.1 222.2h26v26h-26zM117.1 248.2h26v26h-26z"/><path d="M143 274.1h26v26h-26zM169 300.1h26v26h-26zM350.9 66.3h26v26h-26zM350.9 92.3h26v26h-26zM350.9 118.3h26v26h-26z"/><path d="M350.9 144.2h26v26h-26zM324.9 170.2h26v26h-26zM298.9 196.2h26v26h-26zM272.9 222.2h26v26h-26zM246.9 248.2h26v26h-26z"/><path d="M221 274.1h26v26h-26zM195 300.1h26v26h-26zM143 40.3h26v26h-26zM169 66.3h26v26h-26zM195 66.3h26v26h-26zM221 40.3h26v26h-26zM324.9 40.3h26v26h-26z"/></svg>
         </div>
